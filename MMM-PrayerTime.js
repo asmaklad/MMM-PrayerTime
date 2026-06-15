@@ -122,6 +122,10 @@ Module.register("MMM-PrayerTime",{
 		this.updateDom(this.config.animationSpeed);
   },
 
+  getMPT: function (url) {
+      this.sendSocketNotification("GET_MPT", url);
+  },
+
   updateSchedule: function(delay) {
     var self = this;
     Log.log(self.name + ': updateSchedule');
@@ -133,10 +137,23 @@ Module.register("MMM-PrayerTime",{
     var resultNextday = {};
     var nbReq = 2;
     var nbRes = 0;
-    Log.info(self.name + ": Fetching prayer times from " + urlToday + " and " + urlNextday);
-    var todayRequest = getPTonline(urlToday);
-    var nextdayRequest = getPTonline(urlNextday);
-	
+    console.log(self.name + ": Fetching prayer times from " + urlToday + " and " + urlNextday);
+    
+    this.getMPT({url: urlToday, whichDay: "urlToday"});    
+    this.getMPT({url: urlNextday, whichDay: "urlNextday"});
+  },
+
+  insertSchedule: function(payload) {
+    var self = this;
+    console.log(self.name + ": insertSchedule " + JSON.stringify(payload));
+    if (payload.whichDay == "urlToday") {
+      console.log(self.name + ": Updating today's schedule"+ JSON.stringify(payload.data.timings));
+      this.todaySchedule = payload.data.timings;
+    } else if (payload.whichDay == "urlNextday") {
+      console.log(self.name + ": Updating next day's schedule"+ JSON.stringify(payload.data.timings)); 
+      this.nextdaySchedule = payload.data.timings;
+    }    
+    self.processSchedule();
   },
 
   isAdzanNow: function() {
@@ -281,8 +298,15 @@ Module.register("MMM-PrayerTime",{
 		return wrapper;
   },
 
+  socketNotificationReceived: function(notification, payload) {
+    console.log(this.name + ": received SocketNotification : " + notification+ " - Payload: " + JSON.stringify(payload));
+    if (notification === "MPT_RESULT") {
+        this.insertSchedule(payload);
+    } 
+  },
+
 	notificationReceived: function(notification, payload, sender) {
-		Log.log(this.name + ": received notification : " + notification);
+		console.log(this.name + ": received notification : " + notification);
 		if (notification == "PRAYER_TIME") {
       if (payload.type == "PLAY_ADZAN") {
         if (this.config.showAdzanAlert)
