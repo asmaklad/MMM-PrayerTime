@@ -17,7 +17,7 @@ module.exports = NodeHelper.create({
 		console.log("Starting node_helper.js for MMM-PrayerTime.");
 	},
 
-  getPTonline: function(url){
+  getPTonline(url){
     // new Date(Date.now())
     Log.info(this.name + ": Fetching prayer times from " + url);
     todayRequest=new XMLHttpRequest();
@@ -41,22 +41,7 @@ module.exports = NodeHelper.create({
 		};
 		todayRequest.send();
     return(todayRequest);
-  },
 
-  getPTonline2: function(url){
-    var self = this;
-    var request = require('request');
-    request(url, function (error, response, body) {
-      if (!error && response.statusCode == 200) {
-        resultToday = JSON.parse(body);
-        Log.info(self.name + ": Prayer times received: " + JSON.stringify(resultToday.data.timings));
-        self.todaySchedule = resultToday.data.timings;
-        // debug/testing only     
-      }  });
-    return(request);
-  },
-
-  getPTonline3: function(url){
     // fetch(url)
     //   .then(response => response.json())
     //   .then(data => {
@@ -65,18 +50,9 @@ module.exports = NodeHelper.create({
     //   .catch(error => {
     //     console.error("Error fetching prayer times:", error);
     //   });
-    var self = this;
-    var https = require('https');
-    https.get(url, (resp) => {
-      let data = '';
-      resp.on('data', (chunk) => {
-        data += chunk;
-      });     
-    }).on("error", (err) => {      Log.error(self.name + ": Error fetching prayer times: " + err.message);
-    });
-  },  
+  },
 
-  getPTOffline: function() {
+  getPTOffline(){
     var ptData = require('./prayer-time.json');
     this.sendSocketNotification("PT_RESULT", ptData);
   },

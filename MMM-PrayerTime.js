@@ -133,7 +133,6 @@ Module.register("MMM-PrayerTime",{
     var resultNextday = {};
     var nbReq = 2;
     var nbRes = 0;
-
     Log.info(self.name + ": Fetching prayer times from " + urlToday + " and " + urlNextday);
     var todayRequest = getPTonline(urlToday);
     var nextdayRequest = getPTonline(urlNextday);
