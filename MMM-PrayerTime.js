@@ -134,43 +134,10 @@ Module.register("MMM-PrayerTime",{
     var nbReq = 2;
     var nbRes = 0;
 
-    var todayRequest = new XMLHttpRequest();
-		todayRequest.open("GET", urlToday, true);
-		todayRequest.onreadystatechange = function() {
-			if (this.readyState === 4) {
-				if (this.status === 200) {
-          resultToday = JSON.parse(this.responseText);
-          self.todaySchedule = resultToday.data.timings;
-          // debug/testing only
-          //self.todaySchedule = {"Fajr":"04:30", "Dhuhr":"12:00", "Asr":"16:14", "Maghrib":"18:00", "Isha":"20:50", "Imsak":"04:20"};
-          nbRes++;
-          if (nbRes == nbReq)
-            self.processSchedule();
-				} else {
-					Log.error(self.name + ": got HTTP status-" + this.status);
-          retry = true;
-				}
-			}
-		};
-		todayRequest.send();
-
-    var nextdayRequest = new XMLHttpRequest();
-		nextdayRequest.open("GET", urlNextday, true);
-		nextdayRequest.onreadystatechange = function() {
-			if (this.readyState === 4) {
-				if (this.status === 200) {
-          resultNextday = JSON.parse(this.responseText);
-          self.nextdaySchedule = resultNextday.data.timings;
-          nbRes++;
-          if (nbRes == nbReq)
-            self.processSchedule();
-				} else {
-					Log.error(self.name + ": got HTTP status-" + this.status);
-          retry = true;
-				}
-			}
-		};
-		nextdayRequest.send();
+    Log.info(self.name + ": Fetching prayer times from " + urlToday + " and " + urlNextday);
+    var todayRequest = getPTonline(urlToday);
+    var nextdayRequest = getPTonline(urlNextday);
+	
   },
 
   isAdzanNow: function() {
