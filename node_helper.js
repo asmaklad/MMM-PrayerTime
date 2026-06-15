@@ -17,7 +17,7 @@ module.exports = NodeHelper.create({
 		console.log("Starting node_helper.js for MMM-PrayerTime.");
 	},
 
-  getPTonline(url){
+  getPTonline: function(url){
     // new Date(Date.now())
     Log.info(this.name + ": Fetching prayer times from " + url);
     todayRequest=new XMLHttpRequest();
@@ -52,7 +52,7 @@ module.exports = NodeHelper.create({
     //   });
   },
 
-  getPTOffline(){
+  getPTOffline: function(url) {
     var ptData = require('./prayer-time.json');
     this.sendSocketNotification("PT_RESULT", ptData);
   },
