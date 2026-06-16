@@ -1,0 +1,21 @@
+{
+	"FAJR": "Al-Fajr",
+	"SUNRISE": "Lever du soleil",
+	"DHUHR": "Al-Dhuhr",
+	"ASR": "Al-Asr",
+	"SUNSET": "Coucher du soleil",
+	"MAGHRIB": "Al-Maghrib",
+	"ISHA": "Al-Isha",
+	"IMSAK": "Al-Imsak",
+	"MIDNIGHT": "Minuit",
+
+	"ADZAN": "ADHAN",
+	"ALERT_ADZAN_MSG": "C'est l'heure de la prière. Faisons salat %OCCASION!",
+	"ALERT_IMSAK_MSG": "ATTENTION! Maintenant c'est %OCCASION!",
+
+	"TODAY": "Aujourd'hui",
+	"TOMORROW": "Demain",
+
+	"TXT_PRAYERTIME": "HORAIRE DE PRIÈRES",
+	"TXT_PRAYERTIME_DESC": "Afficher l'horaire de prières pour aujourd'hui et demain"
+}

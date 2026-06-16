@@ -34,6 +34,8 @@ modules: [
 			animationSpeed: 2.5 * 1000, // Speed of the update animation. (milliseconds)
 			language: config.language,
 			showAdzanAlert: true,
+			showTomorrow: true,
+			vertical: true, // set false for horizontal view
 			alertTimer: 15000
 		}
 	}
@@ -93,6 +95,52 @@ The following properties can be configured:
 				<br><b>Default value:</b> <code>5</code>
 			</td>
 		</tr>
+                <tr>
+                        <td><code>methodSettings</code></td>
+                        <td>Create your own calculation method,
+				<br>The methodSettings parameter accepts comma separated values in the following order: <code>FajrAngle,MaghribAngleOrMinsAfterSunset,IshaAngleOrMinsAfterSunset</code>
+                                <br>Refer to https://aladhan.com/calculation-methods
+				<br><b>Method option must be:</b> 99
+                                <br><b>Example value:</b> <code>15,null,12</code>
+                                <br><b>Default value:</b> <code>false</code>
+                        </td>
+                </tr>
+                <tr>
+                        <td><code>school</code></td>
+                        <td>0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
+                                <br><b>Default value:</b> <code>0</code>
+                        </td>
+                </tr>
+                <tr>
+                        <td><code>adjustment</code></td>
+                        <td>Number of days to adjust hijri date(s)
+                                <br><b>Example value:</b> <code>1 or 2 or -1 or -2</code>
+                                <br><b>Default value:</b> <code>false</code>
+                        </td>
+                </tr>
+                <tr>
+                        <td><code>tune</code></td>
+                        <td>Same as methodSettings, create your own calculation method,
+				<br>The methodSettings parameter accepts comma separated values in the following order: <code>FajrAngle,MaghribAngleOrMinsAfterSunset,IshaAngleOrMinsAfterSunset</code>
+                                <br>Refer to https://aladhan.com/calculation-methods
+				<br><b>Method option must be:</b> 99
+                                <br><b>Example value:</b> <code>5,3,5,7,9,7</code>
+                                <br><b>Default value:</b> <code>false</code>
+                        </td>
+                </tr>
+                <tr>
+                        <td><code>midnightMode</code></td>
+                        <td>0 for Standard (Mid Sunset to Sunrise), 1 for Jafari (Mid Sunset to Fajr). If you leave this empty, it defaults to Standard.
+                                <br><b>Default value:</b> <code>0</code>
+                        </td>
+                </tr>
+                <tr>
+                        <td><code>latitudeAdjustmentMethod</code></td>
+                        <td>Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.
+                                <br><b>Possible values:</b> <code>1 - Middle of the Night, 2 - One Seventh, 3 - Angle Based</code>
+                                <br><b>Default value:</b> <code>3</code>
+                        </td>
+                </tr>
 		<tr>
 			<td><code>playAdzan</code></td>
 			<td>List/array of the prayer time name to play Adzan.
@@ -142,10 +190,34 @@ The following properties can be configured:
 			</td>
 		</tr>
 		<tr>
+			<td><code>showTomorrow</code></td>
+			<td>Display tomorrow praying time?
+				<br><b>Possible values:</b> <code>true, false</code>
+				<br><b>Default value:</b> <code>true</code>
+			</td>
+		</tr>
+		<tr>
+			<td><code>vertical</code></td>
+			<td>Display vertically?
+				<br><b>Possible values:</b> <code>true, false</code>
+				<br><b>Default value:</b> <code>true</code>
+			</td>
+		</tr>
+		<tr>
 			<td><code>alertTimer</code></td>
 			<td>How long alert will be displayed? (milliseconds)<br>
 				<br><b>Possible values:</b><code>0</code> - <code>60000</code>
 				<br><b>Default value:</b> <code>15000</code> (15 seconds)
+			</td>
+		</tr>
+		<tr>
+			<td><code>telegramAlert</code></td>
+			<td>Send a notification to your Telegram Bot,
+				<br>The telegramAlert is a multidimensional array: <code>[ Status, [["chat_id_1", "chat_id_2", ...], 'bot_token'] ]</code>
+				<br>Refer to https://core.telegram.org/bots/api#sendmessage
+				<br>Refer to https://www.shellhacks.com/telegram-api-send-message-personal-notification-bot/
+				<br><b>Example value:</b> <code>[ true, [["123456789", "987654321", ...], '4334584950:AAEPmjlh94N62Lv9jGWEgOftlxxAfMhB1gs'] ]</code>
+				<br><b>Default value:</b> <code>[false]</code>
 			</td>
 		</tr>
 	</tbody>
