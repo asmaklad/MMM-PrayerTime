@@ -122,6 +122,10 @@ Module.register("MMM-PrayerTime",{
 		this.updateDom(this.config.animationSpeed);
   },
 
+  getMPT: function (url) {
+      this.sendSocketNotification("GET_MPT", url);
+  },
+
   updateSchedule: function(delay) {
     var self = this;
     Log.log(self.name + ': updateSchedule');
@@ -133,44 +137,23 @@ Module.register("MMM-PrayerTime",{
     var resultNextday = {};
     var nbReq = 2;
     var nbRes = 0;
+    console.log(self.name + ": Fetching prayer times from " + urlToday + " and " + urlNextday);
+    
+    this.getMPT({url: urlToday, whichDay: "urlToday"});    
+    this.getMPT({url: urlNextday, whichDay: "urlNextday"});
+  },
 
-    var todayRequest = new XMLHttpRequest();
-		todayRequest.open("GET", urlToday, true);
-		todayRequest.onreadystatechange = function() {
-			if (this.readyState === 4) {
-				if (this.status === 200) {
-          resultToday = JSON.parse(this.responseText);
-          self.todaySchedule = resultToday.data.timings;
-          // debug/testing only
-          //self.todaySchedule = {"Fajr":"04:30", "Dhuhr":"12:00", "Asr":"16:14", "Maghrib":"18:00", "Isha":"20:50", "Imsak":"04:20"};
-          nbRes++;
-          if (nbRes == nbReq)
-            self.processSchedule();
-				} else {
-					Log.error(self.name + ": got HTTP status-" + this.status);
-          retry = true;
-				}
-			}
-		};
-		todayRequest.send();
-
-    var nextdayRequest = new XMLHttpRequest();
-		nextdayRequest.open("GET", urlNextday, true);
-		nextdayRequest.onreadystatechange = function() {
-			if (this.readyState === 4) {
-				if (this.status === 200) {
-          resultNextday = JSON.parse(this.responseText);
-          self.nextdaySchedule = resultNextday.data.timings;
-          nbRes++;
-          if (nbRes == nbReq)
-            self.processSchedule();
-				} else {
-					Log.error(self.name + ": got HTTP status-" + this.status);
-          retry = true;
-				}
-			}
-		};
-		nextdayRequest.send();
+  insertSchedule: function(payload) {
+    var self = this;
+    console.log(self.name + ": insertSchedule " + JSON.stringify(payload));
+    if (payload.whichDay == "urlToday") {
+      console.log(self.name + ": Updating today's schedule"+ JSON.stringify(payload.data.timings));
+      this.todaySchedule = payload.data.timings;
+    } else if (payload.whichDay == "urlNextday") {
+      console.log(self.name + ": Updating next day's schedule"+ JSON.stringify(payload.data.timings)); 
+      this.nextdaySchedule = payload.data.timings;
+    }    
+    self.processSchedule();
   },
 
   isAdzanNow: function() {
@@ -315,8 +298,15 @@ Module.register("MMM-PrayerTime",{
 		return wrapper;
   },
 
+  socketNotificationReceived: function(notification, payload) {
+    console.log(this.name + ": received SocketNotification : " + notification+ " - Payload: " + JSON.stringify(payload));
+    if (notification === "MPT_RESULT") {
+        this.insertSchedule(payload);
+    } 
+  },
+
 	notificationReceived: function(notification, payload, sender) {
-		Log.log(this.name + ": received notification : " + notification);
+		console.log(this.name + ": received notification : " + notification);
 		if (notification == "PRAYER_TIME") {
       if (payload.type == "PLAY_ADZAN") {
         if (this.config.showAdzanAlert)
