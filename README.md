@@ -1,3 +1,8 @@
+# This is a forked version of the project (MMM-PrayerTime [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/slametps/MMM-PrayerTime/master/LICENSE)) 
+In thgis fork, I have fixed the issues:
+* The CORS issue started in May 2026 that stops the module from fetching the prayer times adhan api service.
+* The issue of Audio being exclusive for HDMI and add also the "both" option when playing adhan HDMI and Audio out. 
+
 # MMM-PrayerTime [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/slametps/MMM-PrayerTime/master/LICENSE)
 This an extension for the [MagicMirror<sup>2</sup>](https://github.com/MichMich/MagicMirror). It will display prayer time (in local time) and also recite Adzan/Adhan. Your mirror will be your helpful assistant to do sholat on time.
 
